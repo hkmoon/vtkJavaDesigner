@@ -33,6 +33,6 @@ Currently, there is one sample code in /samples folder.
 
 Acknowledgements
 ---------------
-Robert Futrell's RSyntexTextArea, AutoComplete and RSTALanguageSupport are used.
-Peter Lawrey's dynamic code injection codes are used.
-Werner Randelshofer's ExtensionFileFilter codes are used.
+1. Robert Futrell's RSyntexTextArea, AutoComplete and RSTALanguageSupport are used.
+1. Peter Lawrey's dynamic code injection codes are used.
+1. Werner Randelshofer's ExtensionFileFilter codes are used.
