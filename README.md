@@ -8,10 +8,11 @@ Requirements
 ---------------
 VTK native libraries and wrappers should be installed on the computer.
 
-Under the system environment setting, add the vtk library path to LD_LIBRARY_PATH or DYLD_LIBRARY_PATH(for Mac OSX).
+Under the system environment setting, add the vtk library path to LD_LIBRARY_PATH(for linux) or DYLD_LIBRARY_PATH(for Mac OSX).
 
 For example,
-	DYLD_LIBRARY_PATH=/Users/user/Projects/git-projects/VTK/VTKBuild/lib
+	(Linux) LD_LIBRARY_PATH=/usr/local/VTK/VTKBuild/lib
+	(Mac OSX) DYLD_LIBRARY_PATH=/Users/user/Projects/git-projects/VTK/VTKBuild/lib
 	
 In order to compile VTK in Mac OSX, refer http://stackoverflow.com/questions/17329258/how-to-install-vtk-6-1-for-osx-10-8-with-cocoa-xcode-support.
 
