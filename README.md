@@ -6,7 +6,7 @@ vtkJavaDesigner makes easy to develop vtk java programs in the small text window
 
 Requirements
 ---------------
-VTK native libraries should be installed on the computer.
+VTK native libraries and wrappers should be installed on the computer.
 
 Under the system environment setting, add the vtk library path to LD_LIBRARY_PATH or DYLD_LIBRARY_PATH(for Mac OSX).
 
