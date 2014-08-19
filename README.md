@@ -12,6 +12,8 @@ Under the system environment setting, add the vtk library path to LD_LIBRARY_PAT
 
 For example,
 	DYLD_LIBRARY_PATH=/Users/user/Projects/git-projects/VTK/VTKBuild/lib
+	
+In order to compile VTK in Mac OSX, refer http://stackoverflow.com/questions/17329258/how-to-install-vtk-6-1-for-osx-10-8-with-cocoa-xcode-support.
 
 
 Features
