@@ -1,7 +1,7 @@
 vtkJavaDesigner
 ===============
 
-Run vtk program by run-time dynamic code injection.
+Let's run vtk program by run-time dynamic code compilation.
 vtkJavaDesigner makes easy to develop vtk java programs in the small text window.
 
 Requirements
