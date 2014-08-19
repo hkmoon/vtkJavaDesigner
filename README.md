@@ -11,6 +11,7 @@ VTK native libraries and wrappers should be installed on the computer.
 Under the system environment setting, add the vtk library path to LD_LIBRARY_PATH(for linux) or DYLD_LIBRARY_PATH(for Mac OSX).
 
 For example,
+
 	(Linux) LD_LIBRARY_PATH=/usr/local/VTK/VTKBuild/lib
 	(Mac OSX) DYLD_LIBRARY_PATH=/Users/user/Projects/git-projects/VTK/VTKBuild/lib
 	
