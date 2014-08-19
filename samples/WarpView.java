@@ -96,6 +96,16 @@ public class WarpView extends JPanel implements ActionListener {
 
 		addActor(actor);
 
+		vtkScalarBarActor scalarBar = new vtkScalarBarActor();
+		scalarBar.SetTitle("");
+		scalarBar.SetOrientationToHorizontal();
+		scalarBar.SetLookupTable(colorTable);
+
+		vtkScalarBarWidget scalarBarWidget = new vtkScalarBarWidget();
+		scalarBarWidget.SetInteractor(renWin.getRenderWindowInteractor());
+		scalarBarWidget.SetScalarBarActor(scalarBar);
+		scalarBarWidget.On();
+
 		if(null == camera)
 		{
 			renWin.GetRenderer().ResetCamera();;
