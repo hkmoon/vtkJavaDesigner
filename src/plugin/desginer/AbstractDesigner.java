@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -156,10 +157,12 @@ public abstract class AbstractDesigner extends JFrame {
 		//jls.setAutoActivationEnabled(true);
 
 //		DirLibraryInfo dirInfo = new DirLibraryInfo("bin/", new DirSourceLocation("src/"));
-		JarLibraryInfo jarInfo = new JarLibraryInfo("lib/vtk.jar");
+		JarLibraryInfo vtkJarInfo = new JarLibraryInfo("lib/vtk.jar");
+		JarLibraryInfo openCvJarInfo = new JarLibraryInfo("lib/opencv-249.jar");
 		try {
 			jls.getJarManager().addCurrentJreClassFileSource();
-			jls.getJarManager().addClassFileSource(jarInfo);
+			jls.getJarManager().addClassFileSource(vtkJarInfo);
+			jls.getJarManager().addClassFileSource(openCvJarInfo);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
@@ -178,6 +181,13 @@ public abstract class AbstractDesigner extends JFrame {
 		textArea.setTabsEmulated(false);
 		//setTheme("eclipse");
 		setTheme("dark");
+
+		InputMap im = textArea.getInputMap();
+		im.remove(KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0));
+		im.remove(KeyStroke.getKeyStroke(KeyEvent.VK_END, 0));
+
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0), RSyntaxTextAreaEditorKit.beginLineAction);
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_END, 0), RSyntaxTextAreaEditorKit.endLineAction);
 
 
         RTextScrollPane sp = new RTextScrollPane(textArea);
@@ -231,15 +241,21 @@ public abstract class AbstractDesigner extends JFrame {
         // Remove package declaration
 		Pattern pkg = Pattern.compile("[\\s]*package (.*?);");
 		Matcher pkgMatcher = pkg.matcher(code);
-		pkgMatcher.find();
-		String pkgName = pkgMatcher.group(1);
+		boolean isPkg = pkgMatcher.find();
+		String pkgName = "";
+
+		if(isPkg)
+			pkgName = pkgMatcher.group(1);
 
         // Find a plugin class name
         Pattern pattern = Pattern.compile("[\\s]*public class (.*?) ");
         Matcher m = pattern.matcher(code);
 
         m.find();
-        String className = pkgName + "." + m.group(1);
+        String className = m.group(1);
+
+		if(isPkg)
+			className = pkgName + "." + className;
 
         if(runtime.compile(className, code))
         {

@@ -1,20 +1,22 @@
 vtkJavaDesigner
 ===============
 
-Let's run vtk program by run-time dynamic code compilation.
-vtkJavaDesigner makes easy to develop vtk java programs in the small text window.
+Let's run vtk & opencv program by run-time dynamic code compilation.
+vtkJavaDesigner makes easy to develop vtk opencv java programs in the small text window.
 
 Requirements
 ---------------
 VTK native libraries and wrappers should be installed on the computer.
+OpenCV native libraries should be installed on the computer.
 
 Under the system environment setting, add the vtk library path to LD_LIBRARY_PATH(for linux) or DYLD_LIBRARY_PATH(for Mac OSX).
 
-	(Linux) LD_LIBRARY_PATH=/usr/local/VTK/VTKBuild/lib
-	(Mac OSX) DYLD_LIBRARY_PATH=/Users/user/Projects/git-projects/VTK/VTKBuild/lib
+	(Linux) LD_LIBRARY_PATH=/usr/local/VTK/VTKBuild/lib:/usr/local/opencv/build/lib
+	(Mac OSX) DYLD_LIBRARY_PATH=/Users/user/Projects/git-projects/VTK/VTKBuild/lib:/Users/user/Projects/git-projects/opencv/build/lib
 	
-In order to compile VTK in Mac OSX, refer http://stackoverflow.com/questions/17329258/how-to-install-vtk-6-1-for-osx-10-8-with-cocoa-xcode-support.
+In order to compile VTK in Mac OSX, refer http://stackoverflow.com/questions/17329258/how-to-install-vtk-6-1-for-osx-10-8-with-cocoa-xcode-support
 
+For java opencv, refer http://docs.opencv.org/doc/tutorials/introduction/desktop_java/java_dev_intro.html
 
 Features
 ---------------

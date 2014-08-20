@@ -1,5 +1,7 @@
 package plugin.desginer;
 
+import org.opencv.core.Core;
+
 import javax.swing.*;
 
 /**
@@ -16,11 +18,11 @@ public class VTKJavaDesigner extends AbstractDesigner {
         super("vtkJava Designer");
 
         initializeComponents();
-
     }
 
     public static void main(String[] args) {
         // Start all Swing applications on the EDT.
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
