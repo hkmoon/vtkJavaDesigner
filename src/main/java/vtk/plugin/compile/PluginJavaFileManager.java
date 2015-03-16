@@ -1,4 +1,4 @@
-package plugin.compile;
+package vtk.plugin.compile;
 
 /**
  * Dynamic code injection is based on the below blog.

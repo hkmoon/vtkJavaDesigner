@@ -1,6 +1,10 @@
 package moon;
 import vtk.*;
+import vtk.vtkActor2D;
+import vtk.vtkLabeledDataMapper;
+import vtk.vtkOutlineFilter;
 
+import java.io.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -60,37 +64,119 @@ public class Plot3D extends JPanel implements ActionListener {
 		vtkPolyData inputPolyData = new vtkPolyData();
 		inputPolyData.CopyStructure(reader.GetOutput());
 
-		// warp plane
-		vtkWarpScalar warp = new vtkWarpScalar();
-		warp.SetInputData(inputPolyData);
-		warp.SetScaleFactor(0.0);
+		vtkUnsignedCharArray colors = new vtkUnsignedCharArray();
+		colors.SetNumberOfComponents(1);
+		colors.SetNumberOfTuples(inputPolyData.GetNumberOfPoints());
+
+		vtkStringArray labels = new vtkStringArray();
+		labels.SetNumberOfComponents(1);
+		labels.SetNumberOfTuples(inputPolyData.GetNumberOfPoints());
+		labels.SetName("Name");
+
+		int i = 0;
+
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("samples/simple.label"));
+			try {
+
+				String line = br.readLine();
+
+				while (line != null) {
+					String[] tokens = line.split("_");
+					labels.InsertValue(i, line);
+
+					int color = 0;
+					if("AP".equals(tokens[1])) color = 1;
+					else if("BP".equals(tokens[1])) color = 2;
+					else if("N".equals(tokens[1])) color = 3;
+					colors.InsertTuple1(i, color);
+					i++;
+
+					line = br.readLine();
+				}
+			} catch(Exception e) {
+
+
+			} finally {
+				br.close();
+			}
+
+		} catch(Exception ex) {
+
+		}
+
+		inputPolyData.GetPointData().SetScalars(colors);
+		inputPolyData.GetPointData().AddArray(labels);
+
+		vtkSphereSource glyphSource = new vtkSphereSource();
+		glyphSource.SetRadius(0.09d);
+		glyphSource.Update();
+
+		vtkGlyph3D glyph3D = new vtkGlyph3D();
+		glyph3D.GeneratePointIdsOn();
+		glyph3D.SetSourceConnection(glyphSource.GetOutputPort());
+		glyph3D.SetInputData(inputPolyData);
+		glyph3D.ScalingOff();
+		glyph3D.Update();
+
+		vtkLookupTable colorTable = Jet.getLookuptable();
+		colorTable.Build();
+
+		vtkLabeledDataMapper labelMapper = new vtkLabeledDataMapper();
+		labelMapper.SetFieldDataName("Name");
+		labelMapper.SetLabelModeToLabelFieldData();
+		labelMapper.SetInputData(inputPolyData);
+		labelMapper.SetLabelFormat("%s");
+
+		vtkActor2D labelActor = new vtkActor2D();
+		labelActor.SetMapper(labelMapper);
+
+		// Bounding box
+		vtkOutlineFilter outline = new vtkOutlineFilter();
+		outline.SetInputData(inputPolyData);
+
+		vtkPolyDataMapper outlineMapper = new vtkPolyDataMapper();
+		outlineMapper.SetInputConnection(outline.GetOutputPort());
+		vtkActor outlineActor = new vtkActor();
+		outlineActor.SetMapper(outlineMapper);
+		outlineActor.GetProperty().SetColor(0, 0, 0);
 
 		// Visualize
 		vtkDataSetMapper mapper = new vtkDataSetMapper();
-		mapper.SetInputConnection(warp.GetOutputPort());
+		mapper.SetLookupTable(colorTable);
+		mapper.SetScalarRange(0d, 4d);
+		mapper.SetInputConnection(glyph3D.GetOutputPort());
 
 		vtkActor actor = new vtkActor();
 		actor.GetProperty().SetPointSize(4);
 		actor.SetMapper(mapper);
 
 		addActor(actor);
+		addActor(outlineActor);
+		addActor(labelActor);
+
+		vtkTextProperty tprop = new vtkTextProperty();
+		tprop.SetColor(1, 1, 1);
+		tprop.ShadowOn();
 
 		// add & render CubeAxes
 		vtkCubeAxesActor2D axes = new vtkCubeAxesActor2D();
-		axes.SetInputData(warp.GetOutput());
-		axes.SetFontFactor(3.0);
-		axes.SetFlyModeToNone();
+		axes.SetInputData(glyph3D.GetOutput());
+		axes.SetFontFactor(0.8);
+		axes.SetFlyModeToOuterEdges();
 		axes.SetCamera(renWin.GetRenderer().GetActiveCamera());
-
-		vtkAxisActor2D xAxis = axes.GetXAxisActor2D();
-		xAxis.SetAdjustLabels(1);
+		axes.SetXLabel("PC1");
+		axes.SetYLabel("PC2");
+		axes.SetZLabel("PC3");
+		axes.SetAxisTitleTextProperty(tprop);
+		axes.SetAxisLabelTextProperty(tprop);
 
 		renWin.GetRenderer().AddViewProp(axes);
 
 		if(null == camera)
 		{
-			renWin.GetRenderer().ResetCamera();;
-//			renWin.GetRenderer().SetBackground(0.3, 0.6,  0.3);
+			renWin.GetRenderer().ResetCamera();
+			renWin.GetRenderer().SetBackground(0.3, 0.4, 0.4);
 			renWin.GetRenderer().ResetCameraClippingRange();
 			camera = renWin.GetRenderer().GetActiveCamera();
 		}
@@ -100,12 +186,12 @@ public class Plot3D extends JPanel implements ActionListener {
 		}
 	}
 
-	private void addActor(vtkActor actor)
+	private void addActor(vtkProp actor)
 	{
 		renWin.GetRenderer().AddActor(actor);
 	}
 
-	private void removeActor(vtkActor actor)
+	private void removeActor(vtkProp actor)
 	{
 		renWin.GetRenderer().RemoveActor(actor);
 	}

@@ -1,7 +1,7 @@
-package plugin;
+package vtk.plugin;
 
-import plugin.compile.CachedCompiler;
-import plugin.compile.CompilerUtils;
+import vtk.plugin.compile.CachedCompiler;
+import vtk.plugin.compile.CompilerUtils;
 
 /**
  * PluginRuntime provides a Class instance of compiled java code
