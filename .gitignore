@@ -1,4 +1,6 @@
 *.class
+target/
+*.tif
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
