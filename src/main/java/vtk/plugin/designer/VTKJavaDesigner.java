@@ -13,9 +13,23 @@ import javax.swing.*;
  */
 public class VTKJavaDesigner extends AbstractDesigner {
 
-    public VTKJavaDesigner()
+	// -----------------------------------------------------------------
+	// Load VTK library and print which library was not properly loaded
+	static {
+		if (!vtk.vtkNativeLibrary.LoadAllNativeLibraries()) {
+			for (vtk.vtkNativeLibrary lib : vtk.vtkNativeLibrary.values()) {
+				if (!lib.IsLoaded()) {
+					System.out.println(lib.GetLibraryName() + " not loaded");
+				}
+			}
+		}
+		vtk.vtkNativeLibrary.DisableOutputWindow(null);
+	}
+
+
+	public VTKJavaDesigner(String jarInfo)
     {
-        super("vtkJava Designer");
+        super("vtkJava Designer", jarInfo);
 
         initializeComponents();
     }
@@ -26,7 +40,7 @@ public class VTKJavaDesigner extends AbstractDesigner {
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new VTKJavaDesigner().setVisible(true);
+                new VTKJavaDesigner(null).setVisible(true);
             }
         });
     }

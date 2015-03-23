@@ -1,5 +1,6 @@
 package vtk.plugin.designer;
 
+import ij.IJ;
 import org.fife.rsta.ac.LanguageSupport;
 import org.fife.rsta.ac.LanguageSupportFactory;
 import org.fife.rsta.ac.java.JavaLanguageSupport;
@@ -33,6 +34,7 @@ public abstract class AbstractDesigner extends JFrame {
     protected RSyntaxTextArea textArea;
     protected Class plugin;
     protected HashMap<String, ActionListener> buttons = new HashMap<String, ActionListener>();
+	protected String jarInfo;
 
     protected void load(Class clazz)
     {
@@ -54,8 +56,9 @@ public abstract class AbstractDesigner extends JFrame {
         System.out.println("Unloaded");
     }
 
-    protected AbstractDesigner(String pluginType) {
+    protected AbstractDesigner(String pluginType, String jarInfo) {
         this.pluginType = pluginType;
+		this.jarInfo = jarInfo;
         initializeComponents();
     }
 
@@ -157,14 +160,19 @@ public abstract class AbstractDesigner extends JFrame {
 		//jls.setAutoActivationEnabled(true);
 
 		try {
-			JarLibraryInfo vtkJarInfo = new JarLibraryInfo("lib/vtk.jar");
-			JarLibraryInfo openCvJarInfo = new JarLibraryInfo("lib/opencv-249.jar");
-			JarLibraryInfo ijJarInfo = new JarLibraryInfo("lib/ij-1.49m.jar");
+			//JarLibraryInfo openCvJarInfo = new JarLibraryInfo("lib/opencv-249.jar");
 
 			jls.getJarManager().addCurrentJreClassFileSource();
-			jls.getJarManager().addClassFileSource(vtkJarInfo);
-			jls.getJarManager().addClassFileSource(openCvJarInfo);
-			jls.getJarManager().addClassFileSource(ijJarInfo);
+			if(jarInfo != null)
+			{
+				if(new File(jarInfo).exists())
+					jls.getJarManager().addClassFileSource( new JarLibraryInfo( jarInfo ) );
+				if(new File(jarInfo.replace( "plugins/vtkDesigner.jar", "jars/vtk.jar" )).exists())
+					jls.getJarManager().addClassFileSource( new JarLibraryInfo( jarInfo.replace( "plugins/vtkDesigner.jar", "jars/vtk.jar" ) ) );
+			}
+
+			//jls.getJarManager().addClassFileSource(openCvJarInfo);
+
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
@@ -199,7 +207,7 @@ public abstract class AbstractDesigner extends JFrame {
 
         setContentPane(cp);
         setTitle(pluginType);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
     }

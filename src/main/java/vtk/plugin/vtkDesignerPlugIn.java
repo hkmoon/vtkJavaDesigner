@@ -8,20 +8,26 @@ import vtk.plugin.designer.VTKJavaDesigner;
 
 import javax.swing.*;
 
+import java.io.File;
+
 /**
  * Created by moon on 3/12/15.
  */
 public class vtkDesignerPlugIn implements PlugIn
 {
+	String jarInfo;
 	public vtkDesignerPlugIn()
 	{
-		//CompilerUtils.addClassPath( IJ.cl );
 		try
 		{
 			String str = IJ.getClassLoader().loadClass( "vtk.plugin.vtkDesignerPlugIn" ).getResource( "" ).toString();
-			str = str.replace( "jar:file:", "" ).replace( "!/vtk/plugin/", "" );
-			CompilerUtils.addClassPath( str );
-			//System.out.println( IJ.getClassLoader().loadClass( "vtk.plugin.vtkDesignerPlugIn" ).getResource( "" ).toString() );
+			jarInfo = str.replace( "jar:file:", "" ).replace( "!/vtk/plugin/", "" );
+
+			if(new File(jarInfo).exists())
+				CompilerUtils.addClassPath( jarInfo );
+
+			if(new File(jarInfo.replace( "plugins/vtkDesigner.jar", "jars/vtk.jar" )).exists())
+				CompilerUtils.addClassPath( jarInfo.replace( "plugins/vtkDesigner.jar", "jars/vtk.jar" ) );
 		}
 		catch ( ClassNotFoundException e )
 		{
@@ -36,7 +42,7 @@ public class vtkDesignerPlugIn implements PlugIn
 		{
 			public void run()
 			{
-				new VTKJavaDesigner().setVisible( true );
+				new VTKJavaDesigner(jarInfo).setVisible( true );
 			}
 		} );
 	}
