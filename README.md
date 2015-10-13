@@ -34,6 +34,9 @@ Currently, there is one sample code in /samples folder.
 
 ![WarpView2Screenshot](https://github.com/hkmoon/vtkJavaDesigner/blob/master/doc/WarpView2.png?raw=true)
 
+Trouble shooting
+---------------
+* When you use jdk8, fiji can complain with the wrong compiled version. In such a case, please, remove ```javac-1.6.0.24-ubuntu-fiji2.jar``` and ```tools-1.4.2.jar``` from ```Fiji.app/jars```(refer https://github.com/fiji/fiji/issues/119).
 
 Acknowledgements
 ---------------
