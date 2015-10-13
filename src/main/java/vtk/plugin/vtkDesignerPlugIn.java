@@ -26,8 +26,8 @@ public class vtkDesignerPlugIn implements PlugIn
 			if(new File(jarInfo).exists())
 				CompilerUtils.addClassPath( jarInfo );
 
-			if(new File(jarInfo.replace( "plugins/vtkDesigner.jar", "jars/vtk.jar" )).exists())
-				CompilerUtils.addClassPath( jarInfo.replace( "plugins/vtkDesigner.jar", "jars/vtk.jar" ) );
+			if(new File(jarInfo.replace( "plugins/vtkDesigner_.jar", "jars/vtk.jar" )).exists())
+				CompilerUtils.addClassPath( jarInfo.replace( "plugins/vtkDesigner_.jar", "jars/vtk.jar" ) );
 		}
 		catch ( ClassNotFoundException e )
 		{

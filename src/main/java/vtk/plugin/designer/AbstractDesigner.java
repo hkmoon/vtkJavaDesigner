@@ -167,8 +167,8 @@ public abstract class AbstractDesigner extends JFrame {
 			{
 				if(new File(jarInfo).exists())
 					jls.getJarManager().addClassFileSource( new JarLibraryInfo( jarInfo ) );
-				if(new File(jarInfo.replace( "plugins/vtkDesigner.jar", "jars/vtk.jar" )).exists())
-					jls.getJarManager().addClassFileSource( new JarLibraryInfo( jarInfo.replace( "plugins/vtkDesigner.jar", "jars/vtk.jar" ) ) );
+				if(new File(jarInfo.replace( "plugins/vtkDesigner_.jar", "jars/vtk.jar" )).exists())
+					jls.getJarManager().addClassFileSource( new JarLibraryInfo( jarInfo.replace( "plugins/vtkDesigner_.jar", "jars/vtk.jar" ) ) );
 			}
 
 			//jls.getJarManager().addClassFileSource(openCvJarInfo);
