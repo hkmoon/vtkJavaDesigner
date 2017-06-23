@@ -13,6 +13,8 @@ package vtk.plugin.compile;
 import org.apache.commons.logging.LogFactory;
 
 import javax.tools.JavaFileObject;
+import javax.tools.ToolProvider;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -30,7 +32,8 @@ public class CachedCompiler {
 
     public Class loadFromJava(String className, String javaCode) throws ClassNotFoundException {
         //return loadFromJava(getClass().getClassLoader(), className, javaCode);
-        return loadFromJava(new ReloadableClassLoader(getClass().getClassLoader()), className, javaCode);
+        //return loadFromJava(new ReloadableClassLoader(getClass().getClassLoader()), className, javaCode);
+		return loadFromJava(new ReloadableClassLoader( ToolProvider.getSystemToolClassLoader() ), className, javaCode);
     }
 
     public Map<String, byte[]> compileFromJava(String className, String javaCode) {
