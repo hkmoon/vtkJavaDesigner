@@ -17,6 +17,11 @@
     <name>VTK Java Designer</name>
     <description>Fiji plugins for designing java-based vtk.</description>
 
+    <properties>
+        <vtk.jar.path>${project.basedir}/lib/vtk.jar</vtk.jar.path>
+        <opencv.jar.path>${project.basedir}/lib/opencv-249.jar</opencv.jar.path>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>net.imagej</groupId>
@@ -53,9 +58,33 @@
             <version>1.2</version>
         </dependency>
         <dependency>
+            <groupId>org.jogamp.jogl</groupId>
+            <artifactId>jogl-all</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jogamp.gluegen</groupId>
+            <artifactId>gluegen-rt</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.bytedeco.javacpp-presets</groupId>
             <artifactId>opencv</artifactId>
             <version>2.4.10-0.10</version>
+        </dependency>
+        <dependency>
+            <groupId>vtk</groupId>
+            <artifactId>vtk</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${vtk.jar.path}</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>opencv</groupId>
+            <artifactId>opencv</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${opencv.jar.path}</systemPath>
         </dependency>
     </dependencies>
 
@@ -99,6 +128,14 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
